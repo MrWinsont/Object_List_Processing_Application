@@ -38,3 +38,7 @@ struct Group
 std::vector<Group> GroupByDistance(const std::vector<Object>& objs);
 
 std::vector<Group> GroupByTime(const std::vector<Object>& objs);
+
+std::vector<Group> GroupByName(const std::vector<Object>& objs);
+
+std::vector<Group> GroupByType(const std::vector<Object>& objs);

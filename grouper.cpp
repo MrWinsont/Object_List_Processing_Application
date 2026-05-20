@@ -94,3 +94,70 @@ std::vector<Group> GroupByTime(const std::vector<Object>& objs) {
 
     return res;
 }
+
+std::vector<Group> GroupByName(const std::vector<Object>& objs) {
+    std::map<std::string, std::vector<Object>> groupMap;
+
+    for (const auto& item : objs) {
+        std::string firstLetter;
+
+        if (item.name.size() >= 2 && (unsigned char)item.name[0] == 0xD0 || (unsigned char)item.name[0] == 0xD1){
+            firstLetter = item.name.substr(0, 2);
+        }
+        else{
+            firstLetter = item.name[0];
+        }
+
+        std::string groupName = "#";
+        if (firstLetter.size() == 2){
+            groupName = firstLetter;
+        }
+
+        groupMap[groupName].push_back(item);
+    }
+
+    for (auto& [name, vec] : groupMap) {
+        std::sort(vec.begin(), vec.end(), [](const Object& a, const Object& b) {
+            return a.name < b.name;
+        });
+    }
+
+    std::vector<Group> res;
+    for (auto& [name, vec] : groupMap) {
+        res.push_back({ name, std::move(vec) });
+    }
+
+    return res;
+}
+
+std::vector<Group> GroupByType(const std::vector<Object>& objs) {
+    std::map<std::string, std::vector<Object>> groupMap;
+
+    for (const auto& item : objs) {
+        std::string groupName;
+        
+        auto typeCount = std::count_if(objs.begin(), objs.end(), [&item](const Object& a) {
+            return a.type == item.type;
+        });
+
+        if (typeCount > 1)
+            groupName = item.type;
+        else
+            groupName = u8"Разное";
+
+        groupMap[groupName].push_back(item);
+    }
+
+    for (auto& [name, vec] : groupMap) {
+        std::sort(vec.begin(), vec.end(), [](const Object& a, const Object& b) {
+            return a.name < b.name;
+        });
+    }
+
+    std::vector<Group> res;
+    for (auto& [name, vec] : groupMap) {
+        res.push_back({ name, std::move(vec) });
+    }
+
+    return res;
+}
