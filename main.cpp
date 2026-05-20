@@ -50,27 +50,33 @@ Object ParseLineToObj(const std::string& line) {
     return obj;
 }
 
+void ReadObjects(const std::string& filename, std::vector<Object>& objects) {
+    std::string line;
+
+    std::ifstream f(filename);
+
+    if (f.is_open()) {
+        while (std::getline(f, line)) {
+            objects.push_back(ParseLineToObj(line));
+        }
+    }
+    else {
+        std::cerr << "No such file or directory: " << filename << std::endl;
+        return;
+    }
+
+    f.close();
+}
+
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
     std::vector<Object> objs;
+    ReadObjects("objects.txt", objs);
 
-    std::string line;
-
-    std::ifstream f("objects.txt");
-
-    if (f.is_open()) {
-        while (std::getline(f, line)) {
-            objs.push_back(ParseLineToObj(line));
-        }
+    for (auto i : objs) {
+        i.Info();
     }
-
-    f.close();
-
-    for (auto&& item : objs) {
-        item.Info();
-    }
-    
 }
