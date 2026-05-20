@@ -8,7 +8,8 @@ set(SOURCES
     main.cpp
     grouper.cpp
     grouper.h
-
+    cli.cpp
+    cli.h
 )
 
 
