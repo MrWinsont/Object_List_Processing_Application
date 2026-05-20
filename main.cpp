@@ -1,25 +1,8 @@
 ﻿#include <iostream>
-#include <vector>
-#include <string>
 #include <fstream>
 #include <windows.h>
 
-struct Object
-{
-    std::string name;
-    double x = 0.0;
-    double y = 0.0;
-    std::string type;
-    double timestamp = 0.0;
-
-    void Info() {
-        std::cout << "name: " << name <<
-            "; X: " << x << 
-            "; Y: " << y << 
-            "; type: " << type << 
-            "; timestamp: " << timestamp << "\n";
-    }
-};
+#include "grouper.h"
 
 Object ParseLineToObj(const std::string& line) {
     if (line.empty()) return Object{};
@@ -78,5 +61,14 @@ int main()
 
     for (auto i : objs) {
         i.Info();
+    }
+
+    auto gr = GroupByDistance(objs);
+
+    for (const auto& item : gr) {
+        std::cout << item.name << ":\n";
+        for (auto i : item.objGroup) {
+            i.Info();
+        }
     }
 }
