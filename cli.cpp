@@ -1,4 +1,6 @@
 #include "cli.h"
+#include <chrono>
+#include <thread>
 
 void Cli::Run() {
 	while (work) {
@@ -10,7 +12,6 @@ void Cli::Run() {
 };
 
 void Cli::showStartMenu() {
-	std::cout << "\tObject List Processing Application\n";
 	std::cout << u8"1. Прочитать список объектов из файла\n";
 	std::cout << u8"2. Добавить объект в список\n";
 	std::cout << u8"3. Группировать объекты\n";
@@ -31,15 +32,17 @@ void Cli::showGroupMenu() {
 void Cli::processCommand(int choice) {
 	switch (choice) {
 	case 1:
+		clearConsole();
 		readObjectsChoice();
 		break;
 	case 2:
+		clearConsole();
 		addObjectChoice();
 		break;
 	case 3:
+		clearConsole();
 		groupObjectsChoice();
 	case 4:
-		std::cout << "entered: " << choice << "\n";
 		break;
 
 	case 0:
@@ -47,8 +50,15 @@ void Cli::processCommand(int choice) {
 		break;
 	default:
 		std::cout << u8"некорректный выбор!" << choice << "\n";
+		std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+		clearConsole();
 		break;
 	}
+}
+
+void Cli::readObjectsChoice() {
+	objsManager.LoadFromFile("objects.txt");
+	objsManager.PrintObjects();
 }
 
 void Cli::addObjectChoice() {
@@ -72,5 +82,43 @@ void Cli::addObjectChoice() {
 
 	objsManager.Add(obj);
 
+	clearConsole();
 	std::cout << u8"Объект добавлен!\n";
+}
+
+void Cli::groupObjectsChoice() {
+	showGroupMenu();
+
+	int groupChoice;
+	std::cin >> groupChoice;
+	switch (groupChoice) {
+	case 1:
+		objsManager.GroupByDistance();
+		break;
+	case 2:
+		objsManager.GroupByTime();
+		break;
+	case 3:
+		objsManager.GroupByName();
+		break;
+	case 4:
+		objsManager.GroupByType();
+		break;
+	case 0:
+		clearConsole();
+		break;
+	default:
+		std::cout << groupChoice << u8" - некорректный выбор!" << "\n";
+		std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+		clearConsole();
+		groupObjectsChoice();
+		break;
+	}
+
+	clearConsole();
+	objsManager.PrintCurrentGroup();
+};
+
+void Cli::clearConsole() {
+	std::system("cls");
 }

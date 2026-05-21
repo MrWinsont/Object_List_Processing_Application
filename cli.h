@@ -11,51 +11,19 @@ public:
 
 private:
 	bool work = true;
-	ObjectManager objsManager = ObjectManager();
+	ObjectManager objsManager;
 
 	void showStartMenu();
 
 	void showGroupMenu();
 
-	void clearConsole(){
-		std::system("cls");
-	}
+	void clearConsole();
 
-	void readObjectsChoice() {
-		objsManager.LoadFromFile("objects.txt");
-		objsManager.PrintObjects();
-	}
+	void readObjectsChoice();
 
 	void addObjectChoice();
 
-	void groupObjectsChoice() {
-		showGroupMenu();
-
-		int groupChoice;
-		std::cin >> groupChoice;
-		switch (groupChoice) {
-		case 1:
-			objsManager.GroupByDistance();
-			break;
-		case 2:
-			objsManager.GroupByTime();
-			break;
-		case 3:
-			objsManager.GroupByName();
-			break;
-		case 4:
-			objsManager.GroupByType();
-			break;
-		case 0:
-			showStartMenu();
-			break;
-		default:
-			std::cout << u8"некорректный выбор!" << groupChoice << "\n";
-			break;
-		}
-
-		objsManager.PrintCurrentGroup();
-	};
+	void groupObjectsChoice();
 
 	void processCommand(int choice);
 };

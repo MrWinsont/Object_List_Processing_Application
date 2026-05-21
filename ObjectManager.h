@@ -2,8 +2,6 @@
 #include "grouper.h"
 #include <iostream>
 #include <fstream>
-#include <memory>
-
 
 class ObjectManager
 {
