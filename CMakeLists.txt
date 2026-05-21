@@ -10,6 +10,8 @@ set(SOURCES
     grouper.h
     cli.cpp
     cli.h
+    ObjectManager.cpp
+    ObjectManager.h
 )
 
 
