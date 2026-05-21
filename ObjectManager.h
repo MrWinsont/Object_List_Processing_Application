@@ -12,77 +12,21 @@ public:
 
     void Save(const std::string& filename) {}
 
-    void Add(const ListObject& obj) {
-        // doesn't work with Cyrillic
-        std::ofstream f("objects.txt", std::ios::app);
+    void Add(const ListObject& obj);
 
-        if(f.is_open()){
-            f << obj.name << " " <<
-                obj.x << " " <<
-                obj.y << " " <<
-                obj.type << " " <<
-                obj.timestamp << "\n";
-        }
-    }
+    void GroupByDistance();
 
-    void GroupByDistance() {
-        groupedObjs = Grouper::ByDistance(objs);
-    }
+    void GroupByTime();
 
-    void GroupByTime() {
-        groupedObjs = Grouper::ByTime(objs);
-    }
+    void GroupByName();
 
-    void GroupByName() {
-        groupedObjs = Grouper::ByName(objs);
-    }
-
-    void GroupByType() {
-        groupedObjs = Grouper::ByType(objs);
-    }
+    void GroupByType();
 
     void PrintObjects();
 
-    void PrintCurrentGroup() {
-        for (const auto& item : groupedObjs) {
-            std::cout << item.name << ":\n";
-            for (auto i : item.objGroup) {
-                i.Info();
-            }
-        }
-    }
+    void PrintCurrentGroup();
 
 private:
     std::vector<ListObject> objs;
-
     std::vector<Group> groupedObjs;
-
-    ListObject parseLineToObj(const std::string& line) {
-        if (line.empty()) return ListObject{};
-
-        ListObject obj;
-
-        size_t pos1 = 0;
-        size_t pos2 = 0;
-
-        pos2 = line.find(' ', pos1);
-        obj.name = line.substr(pos1, pos2 - pos1);
-        pos1 = pos2 + 1;
-
-        pos2 = line.find(' ', pos1);
-        obj.x = std::stod(line.substr(pos1, pos2 - pos1));
-        pos1 = pos2 + 1;
-
-        pos2 = line.find(' ', pos1);
-        obj.y = std::stod(line.substr(pos1, pos2 - pos1));
-        pos1 = pos2 + 1;
-
-        pos2 = line.find(' ', pos1);
-        obj.type = line.substr(pos1, pos2 - pos1);
-        pos1 = pos2 + 1;
-
-        obj.timestamp = std::stod(line.substr(pos1));
-
-        return obj;
-    }
 };
