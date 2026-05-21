@@ -8,36 +8,11 @@
 #include <chrono>
 #include <ctime>
 
-struct Object
-{
-    std::string name;
-    double x = 0.0;
-    double y = 0.0;
-    std::string type;
-    double timestamp = 0.0;
-
-    double Dist() const {
-        return std::sqrt(x * x + y * y);
-    }
-
-    void Info() {
-        std::cout << "name: " << name <<
-            "; X: " << x <<
-            "; Y: " << y <<
-            "; type: " << type <<
-            "; timestamp: " << timestamp << "\n";
-    }
-};
-
-struct Group
-{
-    std::string name;
-    std::vector<Object> objGroup;
-};
+#include "Objects.h"
 
 template<typename GroupFunc, typename SortFunc>
-std::vector<Group> GroupObject(const std::vector<Object>& objs, GroupFunc groupFunction, SortFunc sortFunction) {
-    std::map<std::string, std::vector<Object>> groupMap;
+std::vector<Group> GroupObject(const std::vector<ListObject>& objs, GroupFunc groupFunction, SortFunc sortFunction) {
+    std::map<std::string, std::vector<ListObject>> groupMap;
 
     for (const auto& item : objs) {
         groupMap[groupFunction(item)].push_back(item);
@@ -55,10 +30,10 @@ std::vector<Group> GroupObject(const std::vector<Object>& objs, GroupFunc groupF
     return res;
 }
 
-std::vector<Group> GroupByDistance(const std::vector<Object>& objs);
+std::vector<Group> GroupByDistance(const std::vector<ListObject>& objs);
 
-std::vector<Group> GroupByTime(const std::vector<Object>& objs);
+std::vector<Group> GroupByTime(const std::vector<ListObject>& objs);
 
-std::vector<Group> GroupByName(const std::vector<Object>& objs);
+std::vector<Group> GroupByName(const std::vector<ListObject>& objs);
 
-std::vector<Group> GroupByType(const std::vector<Object>& objs);
+std::vector<Group> GroupByType(const std::vector<ListObject>& objs);

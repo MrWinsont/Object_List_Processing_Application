@@ -1,6 +1,6 @@
 #include "grouper.h"
 
-static std::string ProcessDist(const Object& obj) {
+static std::string ProcessDist(const ListObject& obj) {
     auto dist = obj.Dist();
     std::string groupName = u8"далеко";
 
@@ -14,15 +14,15 @@ static std::string ProcessDist(const Object& obj) {
     return groupName;
 }
 
-std::vector<Group> GroupByDistance(const std::vector<Object>& objs) {
-    auto sortFunc = [](const Object& a, const Object& b) {
+std::vector<Group> GroupByDistance(const std::vector<ListObject>& objs) {
+    auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.Dist() < b.Dist();
         };
 
     return GroupObject(objs, ProcessDist, sortFunc);
 }
 
-static std::string ProcessTime(const Object& obj) {
+static std::string ProcessTime(const ListObject& obj) {
     auto now = std::chrono::system_clock::now();
     time_t curTime = std::chrono::system_clock::to_time_t(now);
 
@@ -65,15 +65,15 @@ static std::string ProcessTime(const Object& obj) {
     return groupName;
 }
 
-std::vector<Group> GroupByTime(const std::vector<Object>& objs) {
-    auto sortFunc = [](const Object& a, const Object& b) {
+std::vector<Group> GroupByTime(const std::vector<ListObject>& objs) {
+    auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.timestamp > b.timestamp;
     };
 
     return GroupObject(objs, ProcessTime, sortFunc);
 }
 
-static std::string ProcessName(const Object& obj) {
+static std::string ProcessName(const ListObject& obj) {
     std::string firstLetter;
 
     if (obj.name.size() >= 2 && (unsigned char)obj.name[0] == 0xD0 || (unsigned char)obj.name[0] == 0xD1) {
@@ -91,21 +91,21 @@ static std::string ProcessName(const Object& obj) {
     return groupName;
 }
 
-std::vector<Group> GroupByName(const std::vector<Object>& objs) {
-    auto sortFunc = [](const Object& a, const Object& b) {
+std::vector<Group> GroupByName(const std::vector<ListObject>& objs) {
+    auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.name < b.name;
     };
 
     return GroupObject(objs, ProcessName, sortFunc);
 }
 
-std::vector<Group> GroupByType(const std::vector<Object>& objs) {
-    auto ProcessType = [&objs](const Object& obj) {
+std::vector<Group> GroupByType(const std::vector<ListObject>& objs) {
+    auto ProcessType = [&objs](const ListObject& obj) {
         std::string groupName;
 
-        auto typeCount = std::count_if(objs.begin(), objs.end(), [&obj](const Object& a) {
+        auto typeCount = std::count_if(objs.begin(), objs.end(), [&obj](const ListObject& a) {
             return a.type == obj.type;
-            });
+        });
 
         if (typeCount > 1)
             groupName = obj.type;
@@ -115,7 +115,7 @@ std::vector<Group> GroupByType(const std::vector<Object>& objs) {
         return groupName;
     };
 
-    auto sortFunc = [](const Object& a, const Object& b) {
+    auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.name < b.name;
     };
 
