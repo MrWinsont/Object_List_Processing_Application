@@ -30,10 +30,13 @@ std::vector<Group> GroupObject(const std::vector<ListObject>& objs, GroupFunc gr
     return res;
 }
 
-std::vector<Group> GroupByDistance(const std::vector<ListObject>& objs);
+namespace Grouper
+{
+    std::vector<Group> ByDistance(const std::vector<ListObject>& objs);
 
-std::vector<Group> GroupByTime(const std::vector<ListObject>& objs);
+    std::vector<Group> ByTime(const std::vector<ListObject>& objs);
 
-std::vector<Group> GroupByName(const std::vector<ListObject>& objs);
+    std::vector<Group> ByName(const std::vector<ListObject>& objs);
 
-std::vector<Group> GroupByType(const std::vector<ListObject>& objs);
+    std::vector<Group> ByType(const std::vector<ListObject>& objs);
+}

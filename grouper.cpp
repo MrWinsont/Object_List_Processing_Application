@@ -14,7 +14,7 @@ static std::string ProcessDist(const ListObject& obj) {
     return groupName;
 }
 
-std::vector<Group> GroupByDistance(const std::vector<ListObject>& objs) {
+std::vector<Group> Grouper::ByDistance(const std::vector<ListObject>& objs) {
     auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.Dist() < b.Dist();
         };
@@ -65,7 +65,7 @@ static std::string ProcessTime(const ListObject& obj) {
     return groupName;
 }
 
-std::vector<Group> GroupByTime(const std::vector<ListObject>& objs) {
+std::vector<Group> Grouper::ByTime(const std::vector<ListObject>& objs) {
     auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.timestamp > b.timestamp;
     };
@@ -91,7 +91,7 @@ static std::string ProcessName(const ListObject& obj) {
     return groupName;
 }
 
-std::vector<Group> GroupByName(const std::vector<ListObject>& objs) {
+std::vector<Group> Grouper::ByName(const std::vector<ListObject>& objs) {
     auto sortFunc = [](const ListObject& a, const ListObject& b) {
         return a.name < b.name;
     };
@@ -99,7 +99,7 @@ std::vector<Group> GroupByName(const std::vector<ListObject>& objs) {
     return GroupObject(objs, ProcessName, sortFunc);
 }
 
-std::vector<Group> GroupByType(const std::vector<ListObject>& objs) {
+std::vector<Group> Grouper::ByType(const std::vector<ListObject>& objs) {
     auto ProcessType = [&objs](const ListObject& obj) {
         std::string groupName;
 
