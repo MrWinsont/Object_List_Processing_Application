@@ -142,8 +142,11 @@ void Cli::saveGroupChoice() {
 	if (objsManager.IsGroupsEmpty()){
 		std::cout << u8"Список групп пуст!\n";
 		return;
-	}	
-	objsManager.Save("test_save.txt");
+	}
+	std::string filename;
+	std::cout << u8"Введите имя файла:";
+	std::cin >> filename;
+	objsManager.Save(filename + ".txt");
 	std::cout << u8"Группировка успешно сохранена!\n";
 
 }
