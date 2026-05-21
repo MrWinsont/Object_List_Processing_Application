@@ -19,6 +19,15 @@ void Cli::showStartMenu() {
 	std::cout << u8"Выберите пункт из меню: ";
 }
 
+void Cli::showGroupMenu() {
+	std::cout << u8"1. Сгруппировать по расстоянию\n";
+	std::cout << u8"2. Сгруппировать по времнеи\n";
+	std::cout << u8"3. Сгруппировать по имени\n";
+	std::cout << u8"4. Сгруппироьвать по типу\n";
+	std::cout << u8"0. Назад\n";
+	std::cout << u8"Выберите пункт из меню: ";
+};
+
 void Cli::processCommand(int choice) {
 	switch (choice) {
 	case 1:
@@ -28,6 +37,7 @@ void Cli::processCommand(int choice) {
 		addObjectChoice();
 		break;
 	case 3:
+		groupObjectsChoice();
 	case 4:
 		std::cout << "entered: " << choice << "\n";
 		break;
