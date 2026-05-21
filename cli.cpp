@@ -1,6 +1,9 @@
 #include "cli.h"
 #include <chrono>
 #include <thread>
+#include <Windows.h>
+#include <io.h> 
+#include <fcntl.h>
 
 void Cli::Run() {
 	while (work) {
@@ -42,7 +45,9 @@ void Cli::processCommand(int choice) {
 	case 3:
 		clearConsole();
 		groupObjectsChoice();
+		break;
 	case 4:
+		saveGroupChoice();
 		break;
 
 	case 0:
@@ -58,6 +63,10 @@ void Cli::processCommand(int choice) {
 
 void Cli::readObjectsChoice() {
 	objsManager.LoadFromFile("objects.txt");
+	if (objsManager.IsObjectListEmpty()) {
+		std::cout << u8"Список объектов пуст!\n";
+		return;
+	}
 	objsManager.PrintObjects();
 }
 
@@ -87,6 +96,10 @@ void Cli::addObjectChoice() {
 }
 
 void Cli::groupObjectsChoice() {
+	if (objsManager.IsObjectListEmpty()) {
+		std::cout << u8"Список объектов пуст!\n";
+		return;
+	}
 	showGroupMenu();
 
 	int groupChoice;
@@ -118,6 +131,15 @@ void Cli::groupObjectsChoice() {
 	clearConsole();
 	objsManager.PrintCurrentGroup();
 };
+
+void Cli::saveGroupChoice() {
+	if (objsManager.IsGroupsEmpty()){
+		std::cout << u8"Список групп пуст!\n";
+		return;
+	}	
+	objsManager.Save("test_save.txt");
+
+}
 
 void Cli::clearConsole() {
 	std::system("cls");

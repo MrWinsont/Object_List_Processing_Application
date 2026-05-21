@@ -76,7 +76,7 @@ std::vector<Group> Grouper::ByTime(const std::vector<ListObject>& objs) {
 static std::string ProcessName(const ListObject& obj) {
     std::string firstLetter;
 
-    if (obj.name.size() >= 2 && (unsigned char)obj.name[0] == 0xD0 || (unsigned char)obj.name[0] == 0xD1) {
+    if (obj.name.size() >= 2 && ((unsigned char)obj.name[0] == 0xD0 || (unsigned char)obj.name[0] == 0xD1)) {
         firstLetter = obj.name.substr(0, 2);
     }
     else {

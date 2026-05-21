@@ -8,7 +8,7 @@ class ObjectManager
 public:
     void LoadFromFile(const std::string& filename);
 
-    void Save(const std::string& filename) {}
+    void Save(const std::string& filename);
 
     void Add(const ListObject& obj);
 
@@ -23,6 +23,10 @@ public:
     void PrintObjects();
 
     void PrintCurrentGroup();
+
+    bool IsGroupsEmpty();
+
+    bool IsObjectListEmpty();
 
 private:
     std::vector<ListObject> objs;

@@ -25,5 +25,7 @@ private:
 
 	void groupObjectsChoice();
 
+	void saveGroupChoice();
+
 	void processCommand(int choice);
 };

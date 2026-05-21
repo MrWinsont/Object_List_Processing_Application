@@ -41,8 +41,30 @@ void ObjectManager::LoadFromFile(const std::string& filename) {
             objs.push_back(parseLineToObj(line));
         }
     }else {
-        std::cerr << "No such file or directory: " << filename << std::endl;
-        return;
+        throw std::runtime_error(
+            "Cannot open file: " + filename);
+    }
+}
+
+void ObjectManager::Save(const std::string& filename) {
+    std::ofstream f(filename);
+
+    if (f.is_open()) {
+        for (const auto& group : groupedObjs) {
+            f << group.name << ":\n";
+
+            for (const auto& obj : group.objGroup) {
+                f << obj.name << " "
+                    << obj.x << " "
+                    << obj.y << " "
+                    << obj.type << " "
+                    << obj.timestamp
+                    << '\n';
+            }
+        }
+    }else {
+        throw std::runtime_error(
+            "Cannot open file: " + filename);
     }
 }
 
@@ -51,21 +73,19 @@ void ObjectManager::Add(const ListObject& obj) {
     std::ofstream f("objects.txt", std::ios::app);
 
     if (f.is_open()) {
+
         f << "\n" << obj.name << " " <<
             obj.x << " " <<
             obj.y << " " <<
             obj.type << " " <<
             obj.timestamp;
     }
+    objs.push_back(obj);
 }
 
 void ObjectManager::PrintObjects() {
-    if (!objs.empty()) {
-        for (auto& item : objs) {
-            item.Info();
-        }
-    }else {
-        std::cout << u8"Список пуст!\n";
+    for (auto& item : objs) {
+        item.Info();
     }
 }
 
@@ -92,4 +112,12 @@ void ObjectManager::GroupByName() {
 
 void ObjectManager::GroupByType() {
     groupedObjs = Grouper::ByType(objs);
+}
+
+bool ObjectManager::IsGroupsEmpty() {
+    return groupedObjs.empty();
+}
+
+bool ObjectManager::IsObjectListEmpty() {
+    return objs.empty();
 }
