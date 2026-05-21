@@ -68,24 +68,27 @@ std::vector<Group> Grouper::ByTime(const std::vector<ListObject>& objs) {
     return GroupObject(objs, ProcessTime, sortFunc);
 }
 
+static bool IsFirstRusLetter(const std::string& str) {
+    if (str.size() < 2) 
+        return false;
+    unsigned char ch = static_cast<unsigned char>(str[0]);
+    return (ch == 0xD0 || ch == 0xD1);
+}
+
 static std::string ProcessName(const ListObject& obj) {
     if (obj.name.empty())
         return "#";
 
     std::string firstLetter;
-    if (obj.name.size() >= 2 && ((unsigned char)obj.name[0] == 0xD0 || (unsigned char)obj.name[0] == 0xD1)) {
+    if (IsFirstRusLetter(obj.name))
         firstLetter = obj.name.substr(0, 2);
-    }
-    else {
+    else 
         firstLetter = obj.name[0];
-    }
 
-    std::string groupName = "#";
-    if (firstLetter.size() == 2) {
-        groupName = firstLetter;
-    }
+    if (firstLetter.size() == 2)
+        return firstLetter;
 
-    return groupName;
+    return  "#";
 }
 
 std::vector<Group> Grouper::ByName(const std::vector<ListObject>& objs) {
