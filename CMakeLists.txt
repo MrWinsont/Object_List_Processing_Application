@@ -12,6 +12,7 @@ set(SOURCES
     cli.h
     ObjectManager.cpp
     ObjectManager.h
+    Objects.h
 )
 
 
