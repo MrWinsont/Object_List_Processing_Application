@@ -22,7 +22,11 @@ void Cli::showStartMenu() {
 void Cli::processCommand(int choice) {
 	switch (choice) {
 	case 1:
+		readObjectsChoice();
+		break;
 	case 2:
+		addObjectChoice();
+		break;
 	case 3:
 	case 4:
 		std::cout << "entered: " << choice << "\n";
@@ -35,5 +39,28 @@ void Cli::processCommand(int choice) {
 		std::cout << u8"некорректный выбор!" << choice << "\n";
 		break;
 	}
+}
 
+void Cli::addObjectChoice() {
+	ListObject obj;
+
+	std::cout << u8"Добавление нового объекта\n";
+	std::cout << u8"Имя: ";
+	std::cin >> obj.name;
+
+	std::cout << u8"Координата X: ";
+	std::cin >> obj.x;
+
+	std::cout << u8"Координата Y: ";
+	std::cin >> obj.y;
+
+	std::cout << u8"Тип объекта: ";
+	std::cin >> obj.type;
+
+	std::cout << u8"Время создания (timestamp): ";
+	std::cin >> obj.timestamp;
+
+	objsManager.Add(obj);
+
+	std::cout << u8"Объект добавлен!\n";
 }

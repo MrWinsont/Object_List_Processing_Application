@@ -8,37 +8,35 @@
 class ObjectManager
 {
 public:
-	void LoadFromFile(const std::string& filename) {
-        objs.clear();
-
-        std::string line;
-
-        std::ifstream f(filename);
-
-        if (f.is_open()) {
-            while (std::getline(f, line)) {
-                objs.push_back(parseLineToObj(line));
-            }
-        }
-        else {
-            std::cerr << "No such file or directory: " << filename << std::endl;
-            return;
-        }
-	}
+    void LoadFromFile(const std::string& filename);
 
     void Save(const std::string& filename) {}
 
-    void Add() {}
+    void Add(const ListObject& obj) {
+        // doesn't work with Cyrillic
+        std::ofstream f("objects.txt", std::ios::app);
+
+        if(f.is_open()){
+            f << obj.name << " " <<
+                obj.x << " " <<
+                obj.y << " " <<
+                obj.type << " " <<
+                obj.timestamp << "\n";
+        }
+    }
+
 
     //groupers
 
+    void PrintObjects();
+
 private:
-    std::vector<Object> objs;
+    std::vector<ListObject> objs;
 
-    Object parseLineToObj(const std::string& line) {
-        if (line.empty()) return Object{};
+    ListObject parseLineToObj(const std::string& line) {
+        if (line.empty()) return ListObject{};
 
-        Object obj;
+        ListObject obj;
 
         size_t pos1 = 0;
         size_t pos2 = 0;
