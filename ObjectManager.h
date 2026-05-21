@@ -25,13 +25,37 @@ public:
         }
     }
 
+    void GroupByDistance() {
+        groupedObjs = Grouper::ByDistance(objs);
+    }
 
-    //groupers
+    void GroupByTime() {
+        groupedObjs = Grouper::ByTime(objs);
+    }
+
+    void GroupByName() {
+        groupedObjs = Grouper::ByName(objs);
+    }
+
+    void GroupByType() {
+        groupedObjs = Grouper::ByType(objs);
+    }
 
     void PrintObjects();
 
+    void PrintCurrentGroup() {
+        for (const auto& item : groupedObjs) {
+            std::cout << item.name << ":\n";
+            for (auto i : item.objGroup) {
+                i.Info();
+            }
+        }
+    }
+
 private:
     std::vector<ListObject> objs;
+
+    std::vector<Group> groupedObjs;
 
     ListObject parseLineToObj(const std::string& line) {
         if (line.empty()) return ListObject{};
