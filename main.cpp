@@ -8,7 +8,7 @@ int main()
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    Cli app = Cli();
+    Cli app;
 
     app.Run();
     

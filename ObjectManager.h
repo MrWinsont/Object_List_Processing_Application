@@ -29,6 +29,7 @@ public:
     bool IsObjectListEmpty();
 
 private:
+    std::string currFileName;
     std::vector<ListObject> objs;
     std::vector<Group> groupedObjs;
 };

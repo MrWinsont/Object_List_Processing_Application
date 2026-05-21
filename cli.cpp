@@ -7,10 +7,15 @@
 
 void Cli::Run() {
 	while (work) {
-		showStartMenu();
-		int choice;
-		std::cin >> choice;
-		processCommand(choice);
+		try {
+			showStartMenu();
+			int choice;
+			std::cin >> choice;
+			processCommand(choice);
+		}
+		catch (const std::exception& ex) {
+			std::cerr << ex.what() << "n";
+		}
 	}
 };
 
@@ -47,6 +52,7 @@ void Cli::processCommand(int choice) {
 		groupObjectsChoice();
 		break;
 	case 4:
+		clearConsole();
 		saveGroupChoice();
 		break;
 
@@ -54,7 +60,7 @@ void Cli::processCommand(int choice) {
 		work = false;
 		break;
 	default:
-		std::cout << u8"некорректный выбор!" << choice << "\n";
+		std::cout << choice << u8" - некорректный выбор!" << "\n";
 		std::this_thread::sleep_for(std::chrono::milliseconds(1500));
 		clearConsole();
 		break;
@@ -138,6 +144,7 @@ void Cli::saveGroupChoice() {
 		return;
 	}	
 	objsManager.Save("test_save.txt");
+	std::cout << u8"Группировка успешно сохранена!\n";
 
 }
 

@@ -2,16 +2,15 @@
 
 static std::string ProcessDist(const ListObject& obj) {
     auto dist = obj.Dist();
-    std::string groupName = u8"далеко";
 
     if (dist <= 100.0)
-        groupName = u8"до 100 ед.";
+        return u8"до 100 ед.";
     else if (dist <= 1000.0)
-        groupName = u8"до 1000 ед.";
+        return u8"до 1000 ед.";
     else if (dist <= 10000.0)
-        groupName = u8"до 10000 ед.";
+        return u8"до 10000 ед.";
 
-    return groupName;
+    return u8"далеко";
 }
 
 std::vector<Group> Grouper::ByDistance(const std::vector<ListObject>& objs) {
@@ -34,35 +33,31 @@ static std::string ProcessTime(const ListObject& obj) {
     time_t objTime = static_cast<time_t>(obj.timestamp);
     struct tm* obj_tm = std::localtime(&objTime);
 
-    std::string groupName = u8"Ранее";
-
     if (obj_tm->tm_year + 1900 == curYear &&
         obj_tm->tm_mon + 1 == curMonth &&
         obj_tm->tm_mday == curDay)
     {
-        groupName = u8"Сегодня";
+        return u8"Сегодня";
     }
     else if (obj_tm->tm_year + 1900 == curYear &&
         obj_tm->tm_mon + 1 == curMonth &&
         obj_tm->tm_mday == curDay - 1)
     {
-        groupName = u8"Вчера";
+        return u8"Вчера";
     }
-    else if (std::difftime(curTime, objTime) <= 7 * 24 * 3600)
-    {
-        groupName = u8"На этой неделе";
+    else if (std::difftime(curTime, objTime) <= 7 * 24 * 3600){
+        return u8"На этой неделе";
     }
     else if (obj_tm->tm_year + 1900 == curYear &&
         obj_tm->tm_mon + 1 == curMonth)
     {
-        groupName = u8"В этом месяце";
+        return u8"В этом месяце";
     }
-    else if (obj_tm->tm_year + 1900 == curYear)
-    {
-        groupName = u8"В этом году";
+    else if (obj_tm->tm_year + 1900 == curYear){
+        return u8"В этом году";
     }
 
-    return groupName;
+    return u8"Ранее";
 }
 
 std::vector<Group> Grouper::ByTime(const std::vector<ListObject>& objs) {
@@ -74,8 +69,10 @@ std::vector<Group> Grouper::ByTime(const std::vector<ListObject>& objs) {
 }
 
 static std::string ProcessName(const ListObject& obj) {
-    std::string firstLetter;
+    if (obj.name.empty())
+        return "#";
 
+    std::string firstLetter;
     if (obj.name.size() >= 2 && ((unsigned char)obj.name[0] == 0xD0 || (unsigned char)obj.name[0] == 0xD1)) {
         firstLetter = obj.name.substr(0, 2);
     }
@@ -119,5 +116,5 @@ std::vector<Group> Grouper::ByType(const std::vector<ListObject>& objs) {
         return a.name < b.name;
     };
 
-    return GroupObject(objs, ProcessType, sortFunc);;
+    return GroupObject(objs, ProcessType, sortFunc);
 }

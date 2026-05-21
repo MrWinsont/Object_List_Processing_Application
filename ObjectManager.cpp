@@ -32,6 +32,8 @@ static ListObject parseLineToObj(const std::string& line) {
 void ObjectManager::LoadFromFile(const std::string& filename) {
     objs.clear();
 
+    currFileName = filename;
+
     std::string line;
 
     std::ifstream f(filename);
@@ -70,7 +72,7 @@ void ObjectManager::Save(const std::string& filename) {
 
 void ObjectManager::Add(const ListObject& obj) {
     // doesn't work with Cyrillic
-    std::ofstream f("objects.txt", std::ios::app);
+    std::ofstream f(currFileName, std::ios::app);
 
     if (f.is_open()) {
 
